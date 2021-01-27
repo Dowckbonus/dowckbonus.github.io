@@ -1,0 +1,19 @@
+body {
+    background-color: #232222;
+    margin: 0;
+    overflow: hidden;
+}
+
+h1 {
+    color: #b2b2b2;
+    position: absolute;
+    top: 1em;
+    left: 2em;
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    font-size: 2em;
+    text-transform: uppercase;
+    width: auto;
+    line-height: .8em;
+    border: 2px solid #b2b2b2;
+    padding: .2em;
+}

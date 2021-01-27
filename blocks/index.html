@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Untitled</title>
+	<script src="./js/three.min.js"></script>
+	<script src="./js/TweenMax.min.js"></script>
+	<link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+	<script>
+		var camera, scene, renderer;
+		var geometry, material, mesh;
+		var projector = new THREE.Projector();
+
+		var mouse = new THREE.Vector2();
+
+		function init() {
+
+			renderer = new THREE.CanvasRenderer();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			document.body.appendChild(renderer.domElement);
+
+			camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10);
+			camera.position.z = 3;
+
+			window.addEventListener('resize', () => {
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				camera.aspect = window.innerWidth / window.innerHeight;
+
+				camera.updateProjectionMatrix();
+			})
+
+			scene = new THREE.Scene();
+
+			geometry = new THREE.CubeGeometry(1, 1, 1);
+			material = new THREE.MeshBasicMaterial({ color: 0xB8B8B8, wireframe: true, wireframeLinewidth: 2 });
+
+			// mesh = new THREE.Mesh( geometry, material );
+			// scene.add( mesh );
+
+			for (var i = 0; i < 15; i++) {
+				mesh = new THREE.Mesh(geometry, material);
+				mesh.position.x = (Math.random() - 0.5) * 10;
+				mesh.position.y = (Math.random() - 0.5) * 5;
+				mesh.position.z = (Math.random()) * -5;
+				mesh.rttspeed = (Math.random());
+				scene.add(mesh);
+			}
+
+		}
+
+		function onMouseMove(event) {
+			event.preventDefault();
+
+			mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+			mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+			var vector = new THREE.Vector3(mouse.x, mouse.y, 1);
+			projector.unprojectVector(vector, camera);
+			var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+
+			var intersects = raycaster.intersectObjects(scene.children, true);
+			for (var i = 0; i < intersects.length; i++) {
+				this.tl = new TimelineMax();
+				intersects[i].object.rttspeed = Math.random();
+				this.tl.to(intersects[i].object.scale, .5, { x: 1.5, y: 1.5, z: 1.5, ease: Expo.easeOut })
+				this.tl.to(intersects[i].object.scale, .5, { x: 1, y: 1, z: 1, ease: Expo.easeOut })
+			}
+		}
+
+		function animate() {
+
+			requestAnimationFrame(animate);
+			
+			var meshs = scene.children;
+			for(var i = 0; i < meshs.length; i++)
+			{
+				meshs[i].rotation.x = Date.now() * 0.0005 * meshs[i].rttspeed;
+				meshs[i].rotation.y = Date.now() * 0.001 * meshs[i].rttspeed;
+			}
+
+			// mesh.rotation.x = Date.now() * 0.0005;
+			// mesh.rotation.y = Date.now() * 0.001;
+
+			renderer.render(scene, camera);
+
+		}
+
+		init();
+		animate();
+
+		window.addEventListener('click', onMouseMove);
+
+	</script>
+	<h1>Just Some Blocks</h1>
+</body>
+
+</html>
