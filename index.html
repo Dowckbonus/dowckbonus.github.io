@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        body {
+            background-color: #232222;
+            color: #d1d1d1;
+            margin: 0;
+            overflow: hidden;
+            font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+        }
+
+        div[id="content"] {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: fit-content;
+            border: 2px solid #b2b2b2;
+            padding: 1em;
+            padding-top: .5em;
+            text-transform: uppercase;
+        }
+
+        a {
+            color: #b2b2b2;
+            text-transform: none;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        function showMarkdown() {
+            var xmlhttp;
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    document.getElementById("content").innerHTML = marked(xmlhttp.responseText);
+                }
+            }
+
+            xmlhttp.open("GET", 'README.md', true);
+            xmlhttp.send();
+        }
+    </script>
+</head>
+
+<body>
+    <div id="content"></div>
+    <script>
+        showMarkdown();
+    </script>
+</body>
+
+</html>
